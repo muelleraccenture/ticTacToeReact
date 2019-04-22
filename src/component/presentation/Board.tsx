@@ -70,9 +70,9 @@ const gameComplete = (spaces: Space[]): boolean => {
         [7, 5, 3]
     ]
 
-    let gameComplete = false;
+    for (let i = 0; i < winScenerios.length; i++) {
+        let winScenerio = winScenerios[i]
 
-    winScenerios.forEach(winScenerio => {
         const firstIndex = winScenerio[0] - 1
         const secondIndex = winScenerio[1] - 1
         const thirdIndex = winScenerio[2] - 1
@@ -81,9 +81,9 @@ const gameComplete = (spaces: Space[]): boolean => {
             spaces[firstIndex].value === spaces[secondIndex].value &&
             spaces[firstIndex].value === spaces[thirdIndex].value)
         {
-            gameComplete = true
+            return true
         }
-    })
+    }
 
-    return gameComplete
+    return false
 }

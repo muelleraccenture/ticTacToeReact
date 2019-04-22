@@ -1,4 +1,4 @@
-import {Text, View} from "react-native";
+import {Button, Text, View} from "react-native";
 import React from "react";
 
 export interface WinStateProps {
@@ -16,6 +16,11 @@ export const Win = ({playerTurn, onPress}: WinStateProps & WinStateDispatchProps
             <Text>
                 {"Player " + playerTurn + " Wins"}
             </Text>
+            <Button
+                title={"Reset"}
+                onPress={() => onPress()}
+            >
+            </Button>
         </View>
     )
 }

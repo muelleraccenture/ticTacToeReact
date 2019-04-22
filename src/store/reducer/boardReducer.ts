@@ -3,6 +3,7 @@ import {BoardState, Space} from "../state/BoardState";
 import {DEFAULT_STATE} from "../state/defaultState";
 import {changeSymbolAction} from "../action/ChangeSymbolAction";
 import {isAction} from "../action/action-utils";
+import {resetGameAction} from "../action/ResetGameAction";
 
 export const boardReducer = (previousState: BoardState = DEFAULT_STATE.boardState, action: Action): BoardState => {
 
@@ -20,6 +21,10 @@ export const boardReducer = (previousState: BoardState = DEFAULT_STATE.boardStat
 
    return {...previousState, data: newData, playerTurn: symbol}
  }
+
+    if(isAction(resetGameAction, action)) {
+        return DEFAULT_STATE.boardState
+    }
 
   return previousState
 };

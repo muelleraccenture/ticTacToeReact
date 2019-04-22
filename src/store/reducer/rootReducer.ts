@@ -1,6 +1,7 @@
 import {combineReducers, Reducer} from "redux";
 import {boardReducer} from "./boardReducer";
 import {AppState} from "../state/AppState";
+import {winReducer} from "./winReducer";
 
 
 type RootReducerDefinition<T> = {
@@ -8,5 +9,5 @@ type RootReducerDefinition<T> = {
 }
 
 export default combineReducers({
-    boardState: boardReducer
+    boardState: boardReducer,
 } as RootReducerDefinition<AppState>)

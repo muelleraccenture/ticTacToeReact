@@ -16,6 +16,6 @@ export const DEFAULT_STATE: AppState = {
     boardState: {
         boardName: 'foo',
         playerTurn: 'O',
-        data: data
+        data: data,
     }
 };

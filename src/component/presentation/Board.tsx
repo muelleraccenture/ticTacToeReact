@@ -1,6 +1,7 @@
 import React from "react"
 import {Button, Dimensions, FlatList, StyleSheet, View, Text} from "react-native";
 import {Space} from "../../store/state/BoardState";
+import {WinContainer} from "../container/WinContainer";
 
 export interface BoardStateProps {
     readonly data: Space[],
@@ -12,17 +13,12 @@ export interface BoardStateDispatchProps {
 }
 
 export const Board = ({data, playerTurn, onPress}: BoardStateProps & BoardStateDispatchProps) => {
+
     const complete = gameComplete(data)
 
-
     if (complete) {
-
         return (
-            <View>
-                <Text>
-                    {"Player " + playerTurn + " Wins"}
-                </Text>
-            </View>
+            <WinContainer></WinContainer>
         )
     }
 

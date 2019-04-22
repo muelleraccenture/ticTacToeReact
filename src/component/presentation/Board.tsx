@@ -4,27 +4,37 @@ import {Space} from "../../store/state/BoardState";
 
 export interface BoardStateProps {
     readonly data: Space[],
+    readonly playerTurn: string,
 }
 
 export interface BoardStateDispatchProps {
     readonly onPress: (index: number) => void,
 }
 
-export const Board = ({data, onPress}: BoardStateProps & BoardStateDispatchProps) => {
+export const Board = ({data, playerTurn, onPress}: BoardStateProps & BoardStateDispatchProps) => {
     const complete = gameComplete(data)
 
+
     if (complete) {
+
         return (
             <View>
                 <Text>
-                    {"Player " + complete + " Wins"}
+                    {"Player " + playerTurn + " Wins"}
                 </Text>
             </View>
         )
     }
 
+    const player = playerTurn == 'X' ? 'O' : 'X'
 
     return (
+    <View>
+        <View>
+            <Text>
+                {"Player " + player + "'s turn"}
+            </Text>
+        </View>
         <FlatList
             data={data}
             style={styles.container}
@@ -46,6 +56,7 @@ export const Board = ({data, onPress}: BoardStateProps & BoardStateDispatchProps
             }
             numColumns={3}
         />
+    </View>
     )
 };
 
@@ -64,7 +75,7 @@ const styles = StyleSheet.create({
         }
     });
 
-const gameComplete = (spaces: Space[]): string | undefined => {
+const gameComplete = (spaces: Space[]): boolean => {
 
     const winScenerios = [
         [1, 2, 3],
@@ -88,9 +99,9 @@ const gameComplete = (spaces: Space[]): string | undefined => {
             spaces[firstIndex].value === spaces[secondIndex].value &&
             spaces[firstIndex].value === spaces[thirdIndex].value)
         {
-            return spaces[firstIndex].value
+            return true
         }
     }
 
-    return undefined
+    return false
 }

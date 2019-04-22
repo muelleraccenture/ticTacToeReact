@@ -1,5 +1,5 @@
 import {Action} from "redux";
-import {BoardState} from "../state/BoardState";
+import {BoardState, Space} from "../state/BoardState";
 import {DEFAULT_STATE} from "../state/defaultState";
 import {changeSymbolAction} from "../action/ChangeSymbolAction";
 import {isAction} from "../action/action-utils";
@@ -7,24 +7,25 @@ import {isAction} from "../action/action-utils";
 export const boardReducer = (previousState: BoardState = DEFAULT_STATE.boardState, action: Action): BoardState => {
 
  if(isAction(changeSymbolAction, action)) {
-   const {symbol, index} = action
+    gameComplete(previousState.data)
 
+   const {index: targetIndex} = action
 
-   // const [first, ...rest] = previousState.data;
+   const symbol = previousState.playerTurn == 'X' ? 'O' : 'X'
 
-   // const newFirst = { ...first, value: symbol};
+   const newData = previousState.data.map((space, index) => {
+       if (index == targetIndex) {
+           return {...space, value: symbol}
+       }
+       return space
+   })
 
-   // const updateEntry = previousState.data[index]
-
-   previousState.data[index].value = symbol
-
-
-   //todo is this really the best way to update the array?
-   // return {...previousState, data: [newFirst, ...rest]}
-   // return {...previousState, data: [updateEntry, ...previousState.data]}
-
-   return {...previousState, data: [...previousState.data]}
+   return {...previousState, data: newData, playerTurn: symbol}
  }
 
   return previousState
 };
+
+const gameComplete = (spaces: Space[]) => {
+    console.log(spaces)
+}

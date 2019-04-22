@@ -6,7 +6,7 @@ export interface BoardStateProps {
 }
 
 export interface BoardStateDispatchProps {
-    readonly onPress: (symbol: string, index: number) => void,
+    readonly onPress: (index: number) => void,
 }
 
 export const Board = ({data, onPress}: BoardStateProps & BoardStateDispatchProps) => {
@@ -24,7 +24,7 @@ export const Board = ({data, onPress}: BoardStateProps & BoardStateDispatchProps
                         >
                             <Button
                                 title={String(item.value)}
-                                onPress={() => onPress('X', index)}
+                                onPress={() => onPress(index)}
                             >
                             </Button>
                         </View>

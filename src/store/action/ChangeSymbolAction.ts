@@ -1,7 +1,6 @@
 import {createActionFactory} from "./action-utils";
 
 export interface ChangeSymbolAction {
-    readonly symbol: string,
     readonly index: number,
 }
 

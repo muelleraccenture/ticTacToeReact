@@ -1,8 +1,9 @@
 import React from "react"
-import {Button, Dimensions, FlatList, StyleSheet, Text, View} from "react-native";
+import {Button, Dimensions, FlatList, StyleSheet, View} from "react-native";
+import {Space} from "../../store/state/BoardState";
 
 export interface BoardStateProps {
-    readonly data: {key: string, value: string}[]
+    readonly data: Space[],
 }
 
 export interface BoardStateDispatchProps {
@@ -10,6 +11,11 @@ export interface BoardStateDispatchProps {
 }
 
 export const Board = ({data, onPress}: BoardStateProps & BoardStateDispatchProps) => {
+    const complete = gameComplete(data)
+
+    if (complete) {
+        console.log('game complete')
+    }
 
     return (
         <FlatList
@@ -50,3 +56,34 @@ const styles = StyleSheet.create({
             height: Dimensions.get('window').width / 3,
         }
     });
+
+const gameComplete = (spaces: Space[]): boolean => {
+
+    const winScenerios = [
+        [1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 9],
+        [1, 4, 7],
+        [2, 5, 8],
+        [3, 6, 9],
+        [1, 5, 9],
+        [7, 5, 3]
+    ]
+
+    let gameComplete = false;
+
+    winScenerios.forEach(winScenerio => {
+        const firstIndex = winScenerio[0] - 1
+        const secondIndex = winScenerio[1] - 1
+        const thirdIndex = winScenerio[2] - 1
+
+        if (spaces[firstIndex].value &&
+            spaces[firstIndex].value === spaces[secondIndex].value &&
+            spaces[firstIndex].value === spaces[thirdIndex].value)
+        {
+            gameComplete = true
+        }
+    })
+
+    return gameComplete
+}

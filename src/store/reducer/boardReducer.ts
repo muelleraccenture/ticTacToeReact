@@ -7,8 +7,6 @@ import {isAction} from "../action/action-utils";
 export const boardReducer = (previousState: BoardState = DEFAULT_STATE.boardState, action: Action): BoardState => {
 
  if(isAction(changeSymbolAction, action)) {
-    gameComplete(previousState.data)
-
    const {index: targetIndex} = action
 
    const symbol = previousState.playerTurn == 'X' ? 'O' : 'X'
@@ -26,6 +24,4 @@ export const boardReducer = (previousState: BoardState = DEFAULT_STATE.boardStat
   return previousState
 };
 
-const gameComplete = (spaces: Space[]) => {
-    console.log(spaces)
-}
+

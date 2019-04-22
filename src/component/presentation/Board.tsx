@@ -1,5 +1,5 @@
 import React from "react"
-import {Button, Dimensions, FlatList, StyleSheet, View} from "react-native";
+import {Button, Dimensions, FlatList, StyleSheet, View, Text} from "react-native";
 import {Space} from "../../store/state/BoardState";
 
 export interface BoardStateProps {
@@ -14,8 +14,15 @@ export const Board = ({data, onPress}: BoardStateProps & BoardStateDispatchProps
     const complete = gameComplete(data)
 
     if (complete) {
-        console.log('game complete')
+        return (
+            <View>
+                <Text>
+                    {"Player " + complete + " Wins"}
+                </Text>
+            </View>
+        )
     }
+
 
     return (
         <FlatList
@@ -57,7 +64,7 @@ const styles = StyleSheet.create({
         }
     });
 
-const gameComplete = (spaces: Space[]): boolean => {
+const gameComplete = (spaces: Space[]): string | undefined => {
 
     const winScenerios = [
         [1, 2, 3],
@@ -81,9 +88,9 @@ const gameComplete = (spaces: Space[]): boolean => {
             spaces[firstIndex].value === spaces[secondIndex].value &&
             spaces[firstIndex].value === spaces[thirdIndex].value)
         {
-            return true
+            return spaces[firstIndex].value
         }
     }
 
-    return false
+    return undefined
 }

@@ -1,9 +1,10 @@
 import React from "react"
 import {Dimensions, FlatList, StyleSheet, Text, TouchableHighlight, View} from "react-native";
 import {Space} from "../../store/state/BoardState";
-import {WinContainer} from "../container/WinContainer";
 import {ResetContainer} from "../container/ResetContainer";
-import {colors, container, fonts} from "../../styles/base";
+import {container} from "../../styles/base";
+import {PlayerTurn} from "./PlayerTurn";
+import {Win} from "./Win";
 
 export interface BoardStateProps {
     readonly data: Space[],
@@ -18,27 +19,11 @@ export const Board = ({data, playerTurn, onPress}: BoardStateProps & BoardStateD
 
     const complete = gameComplete(data)
 
-    if (complete) {
-        return (
-            <WinContainer></WinContainer>
-        )
-    }
-
-    const player = playerTurn == 'X' ? 'O' : 'X'
-
+    const headerElement = complete ? <Win playerTurn={playerTurn}/> : <PlayerTurn playerTurn={playerTurn}/>
+    
     return (
         <View>
-            <View style={styles.container}>
-                <Text style={styles.header}>
-                    <Text>
-                        {"Player "}
-                    </Text>
-                    <Text style={styles.player}>{player}</Text>
-                    <Text>
-                        {"'s turn"}
-                    </Text>
-                </Text>
-            </View>
+            {headerElement}
             <FlatList
                 data={data}
                 style={styles.container}
@@ -66,9 +51,7 @@ export const Board = ({data, playerTurn, onPress}: BoardStateProps & BoardStateD
 
 
 const styles = StyleSheet.create({
-        container: {
-            marginVertical: container.marginVert,
-        },
+        container: container,
         item: {
             backgroundColor: '#4D243D',
             alignItems: 'center',
@@ -80,15 +63,6 @@ const styles = StyleSheet.create({
         itemText: {
             color: 'white',
             fontSize: 60,
-        },
-        header: {
-            backgroundColor: colors.header,
-            fontSize: fonts.md,
-            fontWeight: 'bold',
-            textAlign: 'center',
-        },
-        player: {
-            fontSize: fonts.lg
         }
     });
 

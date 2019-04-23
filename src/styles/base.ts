@@ -9,5 +9,12 @@ export const colors = {
 }
 
 export const container = {
-    marginVert: 20
+    marginVertical: 20
+}
+
+export const header = {
+    backgroundColor: colors.header,
+    fontSize: fonts.md,
+    fontWeight: 'bold',
+    textAlign: 'center',
 }

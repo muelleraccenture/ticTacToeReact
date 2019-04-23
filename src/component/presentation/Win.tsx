@@ -1,7 +1,6 @@
-import {Dimensions, StyleSheet, Text, View} from "react-native";
+import {StyleSheet, Text, View} from "react-native";
 import React from "react";
-import {ResetContainer} from "../container/ResetContainer";
-import {colors, container, fonts} from "../../styles/base";
+import {fonts, header} from "../../styles/base";
 
 export interface WinStateProps {
     readonly playerTurn: string,
@@ -11,22 +10,19 @@ export const Win = ({playerTurn}: WinStateProps) => {
 
     return (
         <View style={styles.header}>
-            <Text style={styles.header}>
+            <Text style={[styles.header, styles.custom]}>
                 {"Player " + playerTurn + " Wins"}
             </Text>
-            <ResetContainer></ResetContainer>
         </View>
     )
 }
 
 const styles = StyleSheet.create({
-    header: {
-        backgroundColor: colors.header,
-        marginVertical: container.marginVert,
-        fontSize: fonts.lg,
-        fontWeight: 'bold',
+    header: header,
+    custom: {
         marginBottom: 20,
-        textAlign: 'center',
+        marginVertical: 20,
+        fontSize: fonts.lg,
     }
 });
 

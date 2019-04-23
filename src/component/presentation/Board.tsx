@@ -1,8 +1,9 @@
 import React from "react"
-import {Button, Dimensions, FlatList, StyleSheet, Text, View} from "react-native";
+import {Dimensions, FlatList, StyleSheet, Text, TouchableHighlight, View} from "react-native";
 import {Space} from "../../store/state/BoardState";
 import {WinContainer} from "../container/WinContainer";
 import {ResetContainer} from "../container/ResetContainer";
+import {colors, container, fonts} from "../../styles/base";
 
 export interface BoardStateProps {
     readonly data: Space[],
@@ -43,16 +44,15 @@ export const Board = ({data, playerTurn, onPress}: BoardStateProps & BoardStateD
                 style={styles.container}
                 renderItem={
                     ({ item, index }) => {
+                        const value = item.value ? String(item.value) : "     "
 
                         return (
-                            <View
-                                style={styles.item}
-                            >
-                                <Button
-                                    title={String(item.value)}
+                            <View style={styles.item}>
+                                <TouchableHighlight
                                     onPress={() => onPress(index)}
                                 >
-                                </Button>
+                                    <Text style={styles.itemText}>{value}</Text>
+                                </TouchableHighlight>
                             </View>
                         )
                     }
@@ -67,7 +67,7 @@ export const Board = ({data, playerTurn, onPress}: BoardStateProps & BoardStateD
 
 const styles = StyleSheet.create({
         container: {
-            marginVertical: 20,
+            marginVertical: container.marginVert,
         },
         item: {
             backgroundColor: '#4D243D',
@@ -77,13 +77,18 @@ const styles = StyleSheet.create({
             margin: 1,
             height: Dimensions.get('window').width / 3,
         },
+        itemText: {
+            color: 'white',
+            fontSize: 60,
+        },
         header: {
-            backgroundColor: '#abcafc',
-            fontSize: 20,
+            backgroundColor: colors.header,
+            fontSize: fonts.md,
             fontWeight: 'bold',
+            textAlign: 'center',
         },
         player: {
-            fontSize: 40
+            fontSize: fonts.lg
         }
     });
 

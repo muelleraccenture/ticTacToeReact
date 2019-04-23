@@ -1,8 +1,8 @@
 import React from "react"
-import {Button, Dimensions, FlatList, StyleSheet, View, Text} from "react-native";
+import {Button, Dimensions, FlatList, StyleSheet, Text, View} from "react-native";
 import {Space} from "../../store/state/BoardState";
 import {WinContainer} from "../container/WinContainer";
-import {BoardContainer} from "../container/BoardContainer";
+import {ResetContainer} from "../container/ResetContainer";
 
 export interface BoardStateProps {
     readonly data: Space[],
@@ -27,9 +27,15 @@ export const Board = ({data, playerTurn, onPress}: BoardStateProps & BoardStateD
 
     return (
         <View>
-            <View>
-                <Text>
-                    {"Player " + player + "'s turn"}
+            <View style={styles.container}>
+                <Text style={styles.header}>
+                    <Text>
+                        {"Player "}
+                    </Text>
+                    <Text style={styles.player}>{player}</Text>
+                    <Text>
+                        {"'s turn"}
+                    </Text>
                 </Text>
             </View>
             <FlatList
@@ -53,6 +59,7 @@ export const Board = ({data, playerTurn, onPress}: BoardStateProps & BoardStateD
                 }
                 numColumns={3}
             />
+            <ResetContainer></ResetContainer>
         </View>
     )
 };
@@ -69,6 +76,14 @@ const styles = StyleSheet.create({
             flex: 1,
             margin: 1,
             height: Dimensions.get('window').width / 3,
+        },
+        header: {
+            backgroundColor: '#abcafc',
+            fontSize: 20,
+            fontWeight: 'bold',
+        },
+        player: {
+            fontSize: 40
         }
     });
 

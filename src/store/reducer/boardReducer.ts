@@ -10,16 +10,20 @@ export const boardReducer = (previousState: BoardState = DEFAULT_STATE.boardStat
  if(isAction(changeSymbolAction, action)) {
    const {index: targetIndex} = action
 
-   const symbol = previousState.playerTurn == 'X' ? 'O' : 'X'
+    if (previousState.data[targetIndex].value === undefined) {
+        const symbol = previousState.playerTurn == 'X' ? 'O' : 'X'
 
-   const newData = previousState.data.map((space, index) => {
-       if (index == targetIndex) {
-           return {...space, value: symbol}
-       }
-       return space
-   })
+        const newData = previousState.data.map((space, index) => {
+            if (index == targetIndex) {
+                return {...space, value: symbol}
+            }
+            return space
+        })
 
-   return {...previousState, data: newData, playerTurn: symbol}
+        return {...previousState, data: newData, playerTurn: symbol}
+    }
+
+    return previousState
  }
 
     if(isAction(resetGameAction, action)) {
@@ -28,5 +32,6 @@ export const boardReducer = (previousState: BoardState = DEFAULT_STATE.boardStat
 
   return previousState
 };
+
 
 

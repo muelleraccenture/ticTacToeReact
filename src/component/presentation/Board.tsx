@@ -2,6 +2,7 @@ import React from "react"
 import {Button, Dimensions, FlatList, StyleSheet, View, Text} from "react-native";
 import {Space} from "../../store/state/BoardState";
 import {WinContainer} from "../container/WinContainer";
+import {BoardContainer} from "../container/BoardContainer";
 
 export interface BoardStateProps {
     readonly data: Space[],
@@ -25,34 +26,34 @@ export const Board = ({data, playerTurn, onPress}: BoardStateProps & BoardStateD
     const player = playerTurn == 'X' ? 'O' : 'X'
 
     return (
-    <View>
         <View>
-            <Text>
-                {"Player " + player + "'s turn"}
-            </Text>
-        </View>
-        <FlatList
-            data={data}
-            style={styles.container}
-            renderItem={
-                ({ item, index }) => {
+            <View>
+                <Text>
+                    {"Player " + player + "'s turn"}
+                </Text>
+            </View>
+            <FlatList
+                data={data}
+                style={styles.container}
+                renderItem={
+                    ({ item, index }) => {
 
-                    return (
-                        <View
-                            style={styles.item}
-                        >
-                            <Button
-                                title={String(item.value)}
-                                onPress={() => onPress(index)}
+                        return (
+                            <View
+                                style={styles.item}
                             >
-                            </Button>
-                        </View>
-                    )
+                                <Button
+                                    title={String(item.value)}
+                                    onPress={() => onPress(index)}
+                                >
+                                </Button>
+                            </View>
+                        )
+                    }
                 }
-            }
-            numColumns={3}
-        />
-    </View>
+                numColumns={3}
+            />
+        </View>
     )
 };
 

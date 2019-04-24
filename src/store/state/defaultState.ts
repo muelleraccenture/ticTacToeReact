@@ -1,4 +1,5 @@
 import {AppState} from "./AppState";
+import {GameStatus} from "./BoardState";
 
 const data = [
         {key: '1', value: undefined, win: false},
@@ -17,6 +18,6 @@ export const DEFAULT_STATE: AppState = {
         boardName: 'foo',
         playerTurn: 'O',
         data: data,
-        gameComplete: false,
+        gameStatus: GameStatus.InProgress,
     }
 };

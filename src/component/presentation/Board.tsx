@@ -1,25 +1,40 @@
 import React from "react"
 import {Dimensions, FlatList, StyleSheet, Text, TouchableHighlight, View} from "react-native";
-import {Space} from "../../store/state/BoardState";
+import {GameStatus, Space} from "../../store/state/BoardState";
 import {ResetContainer} from "../container/ResetContainer";
-import {container} from "../../styles/base";
+import {container, header} from "../../styles/base";
 import {PlayerTurn} from "./PlayerTurn";
 import {Win} from "./Win";
 
 export interface BoardStateProps {
     readonly data: Space[],
     readonly playerTurn: string,
-    readonly gameComplete: boolean,
+    readonly gameStatus: GameStatus,
 }
 
 export interface BoardStateDispatchProps {
     readonly onPress: (index: number) => void,
 }
 
-export const Board = ({data, playerTurn, gameComplete, onPress}: BoardStateProps & BoardStateDispatchProps) => {
+export const Board = ({data, playerTurn, gameStatus, onPress}: BoardStateProps & BoardStateDispatchProps) => {
 
-    const headerElement = gameComplete ? <Win playerTurn={playerTurn}/> : <PlayerTurn playerTurn={playerTurn}/>
-    const boardSpacePressAction = gameComplete ? (i: number) => undefined : (i: number) => onPress(i)
+        let headerElement
+        if (gameStatus == GameStatus.Winner) {
+            headerElement = <Win playerTurn={playerTurn}/>
+        } else if (gameStatus == GameStatus.InProgress) {
+            headerElement = <PlayerTurn playerTurn={playerTurn}/>
+        } else if (gameStatus == GameStatus.CatsGame) {
+            headerElement =
+                <View style={styles.container}>
+                    <Text style={styles.header}>
+                        {"Cats Game"}
+                    </Text>
+                </View>
+        }
+
+    const boardSpacePressAction = gameStatus == GameStatus.Winner
+        ? (i: number) => undefined :
+        (i: number) => onPress(i)
 
     return (
         <View>
@@ -55,8 +70,9 @@ export const Board = ({data, playerTurn, gameComplete, onPress}: BoardStateProps
 
 
 const styles = StyleSheet.create({
-        container: container,
-        rowItem: {
+    container: container,
+    header: header,
+    rowItem: {
             backgroundColor: '#4D243D',
             alignItems: 'center',
             justifyContent: 'center',

@@ -1,5 +1,5 @@
 import {Action} from "redux";
-import {BoardState, Space} from "../state/BoardState";
+import {BoardState, GameStatus, Space} from "../state/BoardState";
 import {DEFAULT_STATE} from "../state/defaultState";
 import {changeSymbolAction} from "../action/ChangeSymbolAction";
 import {isAction} from "../action/action-utils";
@@ -10,8 +10,8 @@ export const boardReducer = (previousState: BoardState = DEFAULT_STATE.boardStat
      if(isAction(changeSymbolAction, action)) {
         const {index: targetIndex} = action
         const {data, playerTurn} = updateForTurn(previousState.data, previousState.playerTurn, targetIndex)
-        const {data: dataUpdatedForTurn, gameComplete} = determineIfGameComplete(data)
-        return {...previousState, playerTurn: playerTurn, data: dataUpdatedForTurn, gameComplete}
+        const {data: dataUpdatedForTurn, gameStatus} = determineIfGameComplete(data)
+        return {...previousState, playerTurn: playerTurn, data: dataUpdatedForTurn, gameStatus}
      }
 
     if(isAction(resetGameAction, action)) {
@@ -41,7 +41,7 @@ const updateForTurn = (previousSpaces: Space[],
     return {data: previousSpaces, playerTurn: previousPlayer}
 }
 
-const determineIfGameComplete = (previousSpaces: Space[]): {data: Space[], gameComplete: boolean} => {
+const determineIfGameComplete = (previousSpaces: Space[]): {data: Space[], gameStatus: GameStatus} => {
 
     const winScenerios = [
         [1, 2, 3],
@@ -66,11 +66,21 @@ const determineIfGameComplete = (previousSpaces: Space[]): {data: Space[], gameC
             previousSpaces[firstIndex].value === previousSpaces[thirdIndex].value)
         {
             const newSpaces = colorizeWinningRow(previousSpaces, [firstIndex, secondIndex, thirdIndex])
-            return {data: newSpaces, gameComplete: true}
+            return {data: newSpaces, gameStatus: GameStatus.Winner}
         }
     }
 
-    return {data: previousSpaces, gameComplete: false}
+    let allCellsDefined = true
+
+    previousSpaces.forEach(space => {
+        if (!space.value) allCellsDefined = false
+    })
+
+    if (allCellsDefined) {
+        return {data: previousSpaces, gameStatus: GameStatus.CatsGame}
+    }
+
+    return {data: previousSpaces, gameStatus: GameStatus.InProgress}
 }
 
 const colorizeWinningRow = (previousSpaces: Space[], winningRow: number[]): Space[] => {

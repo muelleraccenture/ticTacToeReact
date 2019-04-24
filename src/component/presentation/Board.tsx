@@ -9,18 +9,18 @@ import {Win} from "./Win";
 export interface BoardStateProps {
     readonly data: Space[],
     readonly playerTurn: string,
+    readonly gameComplete: boolean,
 }
 
 export interface BoardStateDispatchProps {
     readonly onPress: (index: number) => void,
 }
 
-export const Board = ({data, playerTurn, onPress}: BoardStateProps & BoardStateDispatchProps) => {
+export const Board = ({data, playerTurn, gameComplete, onPress}: BoardStateProps & BoardStateDispatchProps) => {
 
-    const complete = gameComplete(data)
+    const headerElement = gameComplete ? <Win playerTurn={playerTurn}/> : <PlayerTurn playerTurn={playerTurn}/>
+    const boardSpacePressAction = gameComplete ? (i: number) => undefined : (i: number) => onPress(i)
 
-    const headerElement = complete ? <Win playerTurn={playerTurn}/> : <PlayerTurn playerTurn={playerTurn}/>
-    
     return (
         <View>
             {headerElement}
@@ -34,7 +34,8 @@ export const Board = ({data, playerTurn, onPress}: BoardStateProps & BoardStateD
                         return (
                             <View style={styles.item}>
                                 <TouchableHighlight
-                                    onPress={() => onPress(index)}
+                                    onPress={() => boardSpacePressAction(index)}
+                                    underlayColor={styles.item.backgroundColor}
                                 >
                                     <Text style={styles.itemText}>{value}</Text>
                                 </TouchableHighlight>
@@ -65,34 +66,3 @@ const styles = StyleSheet.create({
             fontSize: 60,
         }
     });
-
-const gameComplete = (spaces: Space[]): boolean => {
-
-    const winScenerios = [
-        [1, 2, 3],
-        [4, 5, 6],
-        [7, 8, 9],
-        [1, 4, 7],
-        [2, 5, 8],
-        [3, 6, 9],
-        [1, 5, 9],
-        [7, 5, 3]
-    ]
-
-    for (let i = 0; i < winScenerios.length; i++) {
-        let winScenerio = winScenerios[i]
-
-        const firstIndex = winScenerio[0] - 1
-        const secondIndex = winScenerio[1] - 1
-        const thirdIndex = winScenerio[2] - 1
-
-        if (spaces[firstIndex].value &&
-            spaces[firstIndex].value === spaces[secondIndex].value &&
-            spaces[firstIndex].value === spaces[thirdIndex].value)
-        {
-            return true
-        }
-    }
-
-    return false
-}

@@ -12,3 +12,4 @@ export const mapDispatchToProps: MapDispatchToPropsFunction<BoardStateDispatchPr
 });
 
 export const BoardContainer = connect(mapStateToProps, mapDispatchToProps)(Board);
+

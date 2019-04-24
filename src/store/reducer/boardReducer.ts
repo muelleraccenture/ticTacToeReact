@@ -76,9 +76,7 @@ const determineIfGameComplete = (previousSpaces: Space[]): {data: Space[], gameC
 const colorizeWinningRow = (previousSpaces: Space[], winningRow: number[]): Space[] => {
     const newSpaces: Space[] = previousSpaces.map((space, index) => {
         if (index == winningRow[0] || index == winningRow[1] || index == winningRow[2]) {
-            //todo don't change the value only the win this is for initial test only
-
-            return { ...space, value: 'Z', win: true}
+            return { ...space, win: true}
         }
         return space
     })

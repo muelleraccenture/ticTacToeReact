@@ -30,14 +30,17 @@ export const Board = ({data, playerTurn, gameComplete, onPress}: BoardStateProps
                 renderItem={
                     ({ item, index }) => {
                         const value = item.value ? String(item.value) : "     "
+                        const cellStyle = item.win ? styles.winningRowItem : styles.rowItem
+                        const textStyle = item.win ? styles.winItemText : styles.itemText
+                        const underlayStyle = item.win ? styles.winningRowItem.backgroundColor : styles.rowItem.backgroundColor
 
                         return (
-                            <View style={styles.item}>
+                            <View style={cellStyle}>
                                 <TouchableHighlight
                                     onPress={() => boardSpacePressAction(index)}
-                                    underlayColor={styles.item.backgroundColor}
+                                    underlayColor={underlayStyle}
                                 >
-                                    <Text style={styles.itemText}>{value}</Text>
+                                    <Text style={textStyle}>{value}</Text>
                                 </TouchableHighlight>
                             </View>
                         )
@@ -53,8 +56,16 @@ export const Board = ({data, playerTurn, gameComplete, onPress}: BoardStateProps
 
 const styles = StyleSheet.create({
         container: container,
-        item: {
+        rowItem: {
             backgroundColor: '#4D243D',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flex: 1,
+            margin: 1,
+            height: Dimensions.get('window').width / 3,
+        },
+        winningRowItem: {
+            backgroundColor: '#cef442',
             alignItems: 'center',
             justifyContent: 'center',
             flex: 1,
@@ -63,6 +74,10 @@ const styles = StyleSheet.create({
         },
         itemText: {
             color: 'white',
+            fontSize: 60,
+        },
+        winItemText: {
+            color: '#4D243D',
             fontSize: 60,
         }
     });

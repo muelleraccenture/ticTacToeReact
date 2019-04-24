@@ -9,11 +9,9 @@ export const boardReducer = (previousState: BoardState = DEFAULT_STATE.boardStat
 
      if(isAction(changeSymbolAction, action)) {
         const {index: targetIndex} = action
-         //todo change these functions to only take what they need and return
-         // an object that can be destructured with the updated properties
-        const state = updateSelectedSpace(previousState, targetIndex)
-        return determineIfGameComplete(state)
-         //todo put last line here putting all the properties back together again as a boardstate
+        const {data, playerTurn} = updateForTurn(previousState.data, previousState.playerTurn, targetIndex)
+        const {data: dataUpdatedForTurn, gameComplete} = determineIfGameComplete(data)
+        return {...previousState, playerTurn: playerTurn, data: dataUpdatedForTurn, gameComplete}
      }
 
     if(isAction(resetGameAction, action)) {
@@ -23,24 +21,27 @@ export const boardReducer = (previousState: BoardState = DEFAULT_STATE.boardStat
   return previousState
 };
 
-const updateSelectedSpace = (previousState: BoardState, targetIndex: number): BoardState => {
-    if (previousState.data[targetIndex].value === undefined) {
-        const symbol = previousState.playerTurn == 'X' ? 'O' : 'X'
+const updateForTurn = (previousSpaces: Space[],
+                       previousPlayer: string,
+                       targetIndex: number): {data: Space[], playerTurn: string} => {
 
-        const newData: Space[] = previousState.data.map((space, index) => {
+    if (previousSpaces[targetIndex].value === undefined) {
+        const currentPlayer = previousPlayer == 'X' ? 'O' : 'X'
+
+        const newData: Space[] = previousSpaces.map((space, index) => {
             if (index == targetIndex) {
-                return {...space, value: symbol}
+                return {...space, value: currentPlayer}
             }
             return space
         })
 
-        return {...previousState, data: newData, playerTurn: symbol}
+        return {data: newData, playerTurn: currentPlayer}
 
     }
-    return previousState
+    return {data: previousSpaces, playerTurn: previousPlayer}
 }
 
-const determineIfGameComplete = (previousState: BoardState): BoardState => {
+const determineIfGameComplete = (previousSpaces: Space[]): {data: Space[], gameComplete: boolean} => {
 
     const winScenerios = [
         [1, 2, 3],
@@ -60,22 +61,20 @@ const determineIfGameComplete = (previousState: BoardState): BoardState => {
         const secondIndex = winScenerio[1] - 1
         const thirdIndex = winScenerio[2] - 1
 
-        const spaces = previousState.data
-
-        if (spaces[firstIndex].value &&
-            spaces[firstIndex].value === spaces[secondIndex].value &&
-            spaces[firstIndex].value === spaces[thirdIndex].value)
+        if (previousSpaces[firstIndex].value &&
+            previousSpaces[firstIndex].value === previousSpaces[secondIndex].value &&
+            previousSpaces[firstIndex].value === previousSpaces[thirdIndex].value)
         {
-            const updateState = colorizeWinningRow(previousState, [firstIndex, secondIndex, thirdIndex])
-            return {...updateState, gameComplete: true}
+            const newSpaces = colorizeWinningRow(previousSpaces, [firstIndex, secondIndex, thirdIndex])
+            return {data: newSpaces, gameComplete: true}
         }
     }
 
-    return previousState
+    return {data: previousSpaces, gameComplete: false}
 }
 
-const colorizeWinningRow = (previousState: BoardState, winningRow: number[]): BoardState => {
-    const newData: Space[] = previousState.data.map((space, index) => {
+const colorizeWinningRow = (previousSpaces: Space[], winningRow: number[]): Space[] => {
+    const newSpaces: Space[] = previousSpaces.map((space, index) => {
         if (index == winningRow[0] || index == winningRow[1] || index == winningRow[2]) {
             //todo don't change the value only the win this is for initial test only
 
@@ -84,7 +83,7 @@ const colorizeWinningRow = (previousState: BoardState, winningRow: number[]): Bo
         return space
     })
 
-    return {...previousState, data: newData}
+    return newSpaces
 }
 
 

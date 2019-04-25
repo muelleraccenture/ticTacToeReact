@@ -1,5 +1,5 @@
 import React from "react"
-import {Button, Dimensions, FlatList, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View} from "react-native";
+import {Button, Dimensions, FlatList, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {GameStatus, Space} from "../../store/state/BoardState";
 import {ResetContainer} from "../container/ResetContainer";
 import {container, header} from "../../styles/base";
@@ -16,14 +16,15 @@ export interface BoardStateDispatchProps {
     readonly onPress: (index: number) => void,
 }
 
-export const Board = ({data, playerTurn, gameStatus, onPress}: BoardStateProps & BoardStateDispatchProps) => {
+export class Board extends React.Component<BoardStateProps & BoardStateDispatchProps> {
 
+    render() {
         let headerElement
-        if (gameStatus == GameStatus.Winner) {
-            headerElement = <Win playerTurn={playerTurn}/>
-        } else if (gameStatus == GameStatus.InProgress) {
-            headerElement = <PlayerTurn playerTurn={playerTurn}/>
-        } else if (gameStatus == GameStatus.CatsGame) {
+        if (this.props.gameStatus == GameStatus.Winner) {
+            headerElement = <Win playerTurn={this.props.playerTurn}/>
+        } else if (this.props.gameStatus == GameStatus.InProgress) {
+            headerElement = <PlayerTurn playerTurn={this.props.playerTurn}/>
+        } else if (this.props.gameStatus == GameStatus.CatsGame) {
             headerElement =
                 <View style={styles.container}>
                     <Text style={styles.header}>
@@ -32,46 +33,47 @@ export const Board = ({data, playerTurn, gameStatus, onPress}: BoardStateProps &
                 </View>
         }
 
-    const boardSpacePressAction = gameStatus == GameStatus.Winner
-        ? (i: number) => undefined :
-        (i: number) => onPress(i)
+        const boardSpacePressAction = this.props.gameStatus == GameStatus.Winner
+            ? (i: number) => undefined :
+            (i: number) => this.props.onPress(i)
 
-    return (
-        <View>
-            {headerElement}
-            <FlatList
-                data={data}
-                style={styles.container}
-                renderItem={
-                    ({ item, index }) => {
-                        const value = item.value ? String(item.value) : "     "
-                        const cellStyle = item.win ? styles.winningRowItem : styles.rowItem
-                        const textStyle = item.win ? styles.winItemText : styles.itemText
+        return (
+            <View>
+                {headerElement}
+                <FlatList
+                    data={this.props.data}
+                    style={styles.container}
+                    renderItem={
+                        ({item, index}) => {
+                            const value = item.value ? String(item.value) : "     "
+                            const cellStyle = item.win ? styles.winningRowItem : styles.rowItem
+                            const textStyle = item.win ? styles.winItemText : styles.itemText
 
-                        return (
-                            <View style={cellStyle}>
-                                <TouchableOpacity
-                                    onPress={() => boardSpacePressAction(index)}
-                                    activeOpacity={1}
-                                >
-                                    <Text style={textStyle}>{value}</Text>
-                                </TouchableOpacity>
-                            </View>
-                        )
+                            return (
+                                <View style={cellStyle}>
+                                    <TouchableOpacity
+                                        onPress={() => boardSpacePressAction(index)}
+                                        activeOpacity={1}
+                                    >
+                                        <Text style={textStyle}>{value}</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            )
+                        }
                     }
-                }
-                numColumns={3}
-            />
-            <ResetContainer></ResetContainer>
-            <View style={styles.container}>
-                <Button
-                    title={"Go to History"}
-                    onPress={() => null}
-                >
-                </Button>
+                    numColumns={3}
+                />
+                <ResetContainer></ResetContainer>
+                <View style={styles.container}>
+                    <Button
+                        title={"Go to History"}
+                        onPress={() => this.props.navigation.navigate('History')}
+                    >
+                    </Button>
+                </View>
             </View>
-        </View>
-    )
+        )
+    }
 };
 
 

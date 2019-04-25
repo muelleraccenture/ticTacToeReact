@@ -9,7 +9,7 @@ export const colors = {
 }
 
 export const container = {
-    marginVertical: 20
+    marginVertical: 8
 }
 
 export const header = {

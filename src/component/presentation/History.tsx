@@ -1,13 +1,15 @@
 import {Button} from "react-native";
 import React from "react";
 
-export const History = ({}) => {
+export class History extends React.Component {
 
-    return (
-        <Button
-            title={"Back To Home"}
-            onPress={() => null}
-        >
-        </Button>
-    )
+    render() {
+        return (
+            <Button
+                title={"Back To Home"}
+                onPress={() => this.props.navigation.navigate('Home')}
+            >
+            </Button>
+        )
+    }
 }

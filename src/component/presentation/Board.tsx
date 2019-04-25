@@ -1,5 +1,5 @@
 import React from "react"
-import {Dimensions, FlatList, StyleSheet, Text, TouchableHighlight, View} from "react-native";
+import {Button, Dimensions, FlatList, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View} from "react-native";
 import {GameStatus, Space} from "../../store/state/BoardState";
 import {ResetContainer} from "../container/ResetContainer";
 import {container, header} from "../../styles/base";
@@ -47,16 +47,15 @@ export const Board = ({data, playerTurn, gameStatus, onPress}: BoardStateProps &
                         const value = item.value ? String(item.value) : "     "
                         const cellStyle = item.win ? styles.winningRowItem : styles.rowItem
                         const textStyle = item.win ? styles.winItemText : styles.itemText
-                        const underlayStyle = item.win ? styles.winningRowItem.backgroundColor : styles.rowItem.backgroundColor
 
                         return (
                             <View style={cellStyle}>
-                                <TouchableHighlight
+                                <TouchableOpacity
                                     onPress={() => boardSpacePressAction(index)}
-                                    underlayColor={underlayStyle}
+                                    activeOpacity={1}
                                 >
                                     <Text style={textStyle}>{value}</Text>
-                                </TouchableHighlight>
+                                </TouchableOpacity>
                             </View>
                         )
                     }
@@ -64,6 +63,13 @@ export const Board = ({data, playerTurn, gameStatus, onPress}: BoardStateProps &
                 numColumns={3}
             />
             <ResetContainer></ResetContainer>
+            <View style={styles.container}>
+                <Button
+                    title={"Go to History"}
+                    onPress={() => null}
+                >
+                </Button>
+            </View>
         </View>
     )
 };

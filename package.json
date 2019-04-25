@@ -9,9 +9,11 @@
     "android:emulator": "exec ~/Library/Android/sdk/emulator/emulator -avd Pixel_2_API_28 &"
   },
   "dependencies": {
+    "@types/react-router-native": "^4.2.4",
     "react": "16.8.3",
     "react-native": "0.59.3",
-    "react-navigation": "^3.3.2",
+    "react-native-gesture-handler": "^1.1.0",
+    "react-navigation": "^3.9.1",
     "react-redux": "^6.0.1",
     "redux": "^4.0.1",
     "uuid": "^3.3.2"

@@ -1,17 +1,23 @@
 import {Action} from "redux";
-import {BoardState, GameStatus, Space} from "../state/BoardState";
+import {GameStatus, MoveState, Space} from "../state/MoveState";
 import {DEFAULT_STATE} from "../state/defaultState";
 import {changeSymbolAction} from "../action/ChangeSymbolAction";
 import {isAction} from "../action/action-utils";
 import {resetGameAction} from "../action/ResetGameAction";
+import {AppState} from "../state/AppState";
+import {BoardState} from "../state/BoardState";
 
 export const boardReducer = (previousState: BoardState = DEFAULT_STATE.boardState, action: Action): BoardState => {
 
+    const currentMove = previousState.history[previousState.history.length - 1]
+
      if(isAction(changeSymbolAction, action)) {
         const {index: targetIndex} = action
-        const {data, playerTurn} = updateForTurn(previousState.data, previousState.playerTurn, targetIndex)
+        const {data, playerTurn} = updateForTurn(currentMove.data, currentMove.playerTurn, targetIndex)
         const {data: dataUpdatedForTurn, gameStatus} = determineIfGameComplete(data)
-        return {...previousState, playerTurn: playerTurn, data: dataUpdatedForTurn, gameStatus}
+
+        const newHistory = [{playerTurn: playerTurn, data: dataUpdatedForTurn, gameStatus}]
+        return {...previousState, history: [...previousState.history, ...newHistory]}
      }
 
     if(isAction(resetGameAction, action)) {

@@ -1,14 +1,6 @@
+import {MoveState} from "./MoveState";
+
 export interface BoardState {
+    readonly history : MoveState[],
     readonly boardName: string,
-    readonly playerTurn: string,
-    readonly data: Space[],
-    readonly gameStatus: GameStatus,
-}
-
-export type Space = {key: string, value?: string, win: boolean}
-
-export enum GameStatus {
-    InProgress,
-    Winner,
-    CatsGame
 }

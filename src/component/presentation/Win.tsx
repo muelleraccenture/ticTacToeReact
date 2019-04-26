@@ -3,7 +3,7 @@ import React from "react";
 import {fonts, header} from "../../styles/base";
 
 export interface WinStateProps {
-    readonly playerTurn: string,
+    readonly playerTurn: string | null,
 }
 
 export const Win = ({playerTurn}: WinStateProps) => {

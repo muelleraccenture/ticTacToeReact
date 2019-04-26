@@ -1,15 +1,14 @@
 import React from "react"
 import {Button, Dimensions, FlatList, StyleSheet, Text, TouchableOpacity, View} from "react-native";
-import {GameStatus, Space} from "../../store/state/BoardState";
+import {GameStatus, Space} from "../../store/state/MoveState";
 import {ResetContainer} from "../container/ResetContainer";
 import {container, header} from "../../styles/base";
 import {PlayerTurn} from "./PlayerTurn";
 import {Win} from "./Win";
+import {BoardState} from "../../store/state/BoardState";
 
 export interface BoardStateProps {
-    readonly data: Space[],
-    readonly playerTurn: string,
-    readonly gameStatus: GameStatus,
+    readonly boardState: BoardState
 }
 
 export interface BoardStateDispatchProps {
@@ -18,22 +17,27 @@ export interface BoardStateDispatchProps {
 
 export class Board extends React.Component<BoardStateProps & BoardStateDispatchProps> {
 
+
     render() {
+        const history = this.props.boardState.history
+        const moveState = history[history.length - 1]
         let headerElement
-        if (this.props.gameStatus == GameStatus.Winner) {
-            headerElement = <Win playerTurn={this.props.playerTurn}/>
-        } else if (this.props.gameStatus == GameStatus.InProgress) {
-            headerElement = <PlayerTurn playerTurn={this.props.playerTurn}/>
-        } else if (this.props.gameStatus == GameStatus.CatsGame) {
+
+        if (moveState.gameStatus == GameStatus.Winner) {
+            headerElement = <Win playerTurn={moveState.playerTurn}/>
+        } else if (moveState.gameStatus == GameStatus.InProgress) {
+            headerElement = <PlayerTurn playerTurn={moveState.playerTurn}/>
+        } else if (moveState.gameStatus == GameStatus.CatsGame) {
             headerElement =
                 <View style={styles.container}>
+                    // @ts-ignore
                     <Text style={styles.header}>
                         {"Cats Game"}
                     </Text>
                 </View>
         }
 
-        const boardSpacePressAction = this.props.gameStatus == GameStatus.Winner
+        const boardSpacePressAction = moveState.gameStatus == GameStatus.Winner
             ? (i: number) => undefined :
             (i: number) => this.props.onPress(i)
 
@@ -41,7 +45,7 @@ export class Board extends React.Component<BoardStateProps & BoardStateDispatchP
             <View>
                 {headerElement}
                 <FlatList
-                    data={this.props.data}
+                    data={moveState.data as Space[]}
                     style={styles.container}
                     renderItem={
                         ({item, index}) => {
@@ -67,6 +71,7 @@ export class Board extends React.Component<BoardStateProps & BoardStateDispatchP
                 <View style={styles.container}>
                     <Button
                         title={"Go to History"}
+                        // @ts-ignore
                         onPress={() => this.props.navigation.navigate('History')}
                     >
                     </Button>

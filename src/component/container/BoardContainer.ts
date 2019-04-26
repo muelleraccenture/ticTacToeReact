@@ -4,7 +4,7 @@ import {AppState} from "../../store/state/AppState";
 import {changeSymbolAction} from "../../store/action/ChangeSymbolAction";
 
 export const mapStateToProps: MapStateToProps<BoardStateProps, void, AppState> = (state) => {
-   return state.boardState
+   return state
 };
 
 export const mapDispatchToProps: MapDispatchToPropsFunction<BoardStateDispatchProps, void> = (dispatch) => ({

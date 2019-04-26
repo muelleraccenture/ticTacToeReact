@@ -1,5 +1,5 @@
 import {AppState} from "./AppState";
-import {GameStatus} from "./BoardState";
+import {GameStatus} from "./MoveState";
 
 const data = [
         {key: '1', value: undefined, win: false},
@@ -15,9 +15,11 @@ const data = [
 
 export const DEFAULT_STATE: AppState = {
     boardState: {
+        history: [{
+            playerTurn: 'O',
+            data: data,
+            gameStatus: GameStatus.InProgress,
+        }],
         boardName: 'foo',
-        playerTurn: 'O',
-        data: data,
-        gameStatus: GameStatus.InProgress,
     }
 };

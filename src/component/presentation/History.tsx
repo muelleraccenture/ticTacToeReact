@@ -7,6 +7,7 @@ export class History extends React.Component {
         return (
             <Button
                 title={"Back To Home"}
+                // @ts-ignore
                 onPress={() => this.props.navigation.navigate('Home')}
             >
             </Button>

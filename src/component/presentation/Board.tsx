@@ -6,6 +6,7 @@ import {container, header} from "../../styles/base";
 import {PlayerTurn} from "./PlayerTurn";
 import {Win} from "./Win";
 import {BoardState} from "../../store/state/BoardState";
+import {Reset} from "./Reset";
 
 export interface BoardStateProps {
     readonly boardState: BoardState
@@ -13,6 +14,7 @@ export interface BoardStateProps {
 
 export interface BoardStateDispatchProps {
     readonly onPress: (index: number) => void,
+    readonly resetGame: () => void,
 }
 
 export class Board extends React.Component<BoardStateProps & BoardStateDispatchProps> {
@@ -67,7 +69,7 @@ export class Board extends React.Component<BoardStateProps & BoardStateDispatchP
                     }
                     numColumns={3}
                 />
-                <ResetContainer></ResetContainer>
+                <Reset resetGame={this.props.resetGame}></Reset>
                 <View style={styles.container}>
                     <Button
                         title={"Go to History"}

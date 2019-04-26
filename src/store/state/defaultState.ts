@@ -20,6 +20,7 @@ export const DEFAULT_STATE: AppState = {
             data: data,
             gameStatus: GameStatus.InProgress,
         }],
+        stepNumber: 0,
         boardName: 'foo',
     }
 };

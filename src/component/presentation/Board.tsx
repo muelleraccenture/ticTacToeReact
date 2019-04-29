@@ -1,11 +1,10 @@
 import React from "react"
 import {Button, Dimensions, FlatList, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {GameStatus, Space} from "../../store/state/MoveState";
-import {container, header} from "../../styles/base";
-import {PlayerTurn} from "./PlayerTurn";
-import {Win} from "./Win";
+import {container} from "../../styles/base";
 import {BoardState} from "../../store/state/BoardState";
 import {Reset} from "./Reset";
+import {Header} from "./Header";
 
 export interface BoardStateProps {
     readonly boardState: BoardState
@@ -21,20 +20,6 @@ export class Board extends React.Component<BoardStateProps & BoardStateDispatchP
     render() {
         const history = this.props.boardState.history
         const moveState = history[history.length - 1]
-        let headerElement
-
-        if (moveState.gameStatus == GameStatus.Winner) {
-            headerElement = <Win playerTurn={moveState.playerTurn}/>
-        } else if (moveState.gameStatus == GameStatus.InProgress) {
-            headerElement = <PlayerTurn playerTurn={moveState.playerTurn}/>
-        } else if (moveState.gameStatus == GameStatus.CatsGame) {
-            headerElement =
-                <View style={styles.container}>
-                    <Text style={styles.header}>
-                        {"Cats Game"}
-                    </Text>
-                </View>
-        }
 
         const boardSpacePressAction = moveState.gameStatus == GameStatus.Winner
             ? (i: number) => undefined :
@@ -42,7 +27,7 @@ export class Board extends React.Component<BoardStateProps & BoardStateDispatchP
 
         return (
             <View>
-                {headerElement}
+                <Header history={history} />
                 <FlatList
                     data={moveState.data as Space[]}
                     style={styles.container}
@@ -83,7 +68,6 @@ export class Board extends React.Component<BoardStateProps & BoardStateDispatchP
 
 const styles = StyleSheet.create({
     container: container,
-    header: header,
     rowItem: {
         backgroundColor: '#4D243D',
         alignItems: 'center',

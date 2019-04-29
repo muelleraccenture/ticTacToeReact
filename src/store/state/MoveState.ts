@@ -1,5 +1,6 @@
 export interface MoveState {
     readonly playerTurn: string,
+    readonly currentMoveIndex: number,
     readonly data: Space[],
     readonly gameStatus: GameStatus,
 }

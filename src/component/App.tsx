@@ -2,8 +2,8 @@ import {Provider} from "react-redux"
 import React from "react"
 import {initializeStore} from "../store/store";
 import {createAppContainer, createStackNavigator} from 'react-navigation';
-import {History} from "./presentation/History";
 import {BoardContainer} from "./container/BoardContainer";
+import {HistoryContainer} from "./container/HistoryContainer";
 
 export const App = () =>
     <Provider store={initializeStore()}>
@@ -13,7 +13,7 @@ export const App = () =>
 const AppNavigator = createStackNavigator(
     {
             Home: BoardContainer,
-            History: History
+            History: HistoryContainer
         },
     {initialRouteName: "Home"}
     )

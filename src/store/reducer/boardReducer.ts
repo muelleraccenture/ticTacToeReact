@@ -4,7 +4,6 @@ import {DEFAULT_STATE} from "../state/defaultState";
 import {changeSymbolAction} from "../action/ChangeSymbolAction";
 import {isAction} from "../action/action-utils";
 import {resetGameAction} from "../action/ResetGameAction";
-import {AppState} from "../state/AppState";
 import {BoardState} from "../state/BoardState";
 
 export const boardReducer = (previousState: BoardState = DEFAULT_STATE.boardState, action: Action): BoardState => {
@@ -13,10 +12,10 @@ export const boardReducer = (previousState: BoardState = DEFAULT_STATE.boardStat
 
      if(isAction(changeSymbolAction, action)) {
         const {index: targetIndex} = action
-        const {data, playerTurn} = updateForTurn(currentMove.data, currentMove.playerTurn, targetIndex)
+        const {data, playerTurn, currentMoveIndex} = updateForTurn(currentMove.data, currentMove.playerTurn, targetIndex)
         const {data: dataUpdatedForTurn, gameStatus} = determineIfGameComplete(data)
 
-        const newHistory = [{playerTurn: playerTurn, data: dataUpdatedForTurn, gameStatus}]
+        const newHistory: MoveState[] = [{playerTurn: playerTurn, data: dataUpdatedForTurn, gameStatus, currentMoveIndex: currentMoveIndex}]
         return {...previousState, history: [...previousState.history, ...newHistory]}
      }
 
@@ -29,7 +28,7 @@ export const boardReducer = (previousState: BoardState = DEFAULT_STATE.boardStat
 
 const updateForTurn = (previousSpaces: Space[],
                        previousPlayer: string,
-                       targetIndex: number): {data: Space[], playerTurn: string} => {
+                       targetIndex: number): {data: Space[], playerTurn: string, currentMoveIndex: number} => {
 
     if (previousSpaces[targetIndex].value === undefined) {
         const currentPlayer = previousPlayer == 'X' ? 'O' : 'X'
@@ -41,10 +40,10 @@ const updateForTurn = (previousSpaces: Space[],
             return space
         })
 
-        return {data: newData, playerTurn: currentPlayer}
+        return {data: newData, playerTurn: currentPlayer, currentMoveIndex: targetIndex}
 
     }
-    return {data: previousSpaces, playerTurn: previousPlayer}
+    return {data: previousSpaces, playerTurn: previousPlayer, currentMoveIndex: targetIndex - 1}
 }
 
 const determineIfGameComplete = (previousSpaces: Space[]): {data: Space[], gameStatus: GameStatus} => {

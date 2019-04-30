@@ -19,6 +19,7 @@ export const DEFAULT_STATE: AppState = {
             playerTurn: 'O',
             data: data,
             gameStatus: GameStatus.InProgress,
+            currentMoveIndex: 0,
         }],
         stepNumber: 0,
         boardName: 'foo',

@@ -7,11 +7,14 @@ export interface HistoryStateProps {
     readonly boardState: BoardState
 }
 
-export class History extends React.Component<HistoryStateProps> {
+export interface HistoryStateDispatchProps {
+    readonly jumpToMove: (index: number) => void,
+}
+
+export class History extends React.Component<HistoryStateProps & HistoryStateDispatchProps> {
 
     render() {
         const moveStateHistory = this.props.boardState.history
-
 
         return (
             <View>
@@ -35,7 +38,9 @@ export class History extends React.Component<HistoryStateProps> {
                                     <Text style={styles.listItem}>{item.playerTurn + " " + rowText}</Text>
 
                                 return (
-                                    <TouchableOpacity>
+                                    <TouchableOpacity
+                                        onPress={() => this.props.jumpToMove(index)}
+                                    >
                                         {buttonText}
                                     </TouchableOpacity>
                                 )

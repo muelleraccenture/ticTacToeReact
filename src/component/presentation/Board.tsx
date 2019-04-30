@@ -19,7 +19,7 @@ export class Board extends React.Component<BoardStateProps & BoardStateDispatchP
 
     render() {
         const history = this.props.boardState.history
-        const moveState = history[history.length - 1]
+        const moveState = history[this.props.boardState.stepNumber]
 
         const boardSpacePressAction = moveState.gameStatus == GameStatus.Winner
             ? (i: number) => undefined :
@@ -27,7 +27,7 @@ export class Board extends React.Component<BoardStateProps & BoardStateDispatchP
 
         return (
             <View>
-                <Header history={history} />
+                <Header moveState={moveState} />
                 <FlatList
                     data={moveState.data as Space[]}
                     style={styles.container}

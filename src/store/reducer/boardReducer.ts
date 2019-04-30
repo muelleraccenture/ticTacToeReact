@@ -5,22 +5,29 @@ import {changeSymbolAction} from "../action/ChangeSymbolAction";
 import {isAction} from "../action/action-utils";
 import {resetGameAction} from "../action/ResetGameAction";
 import {BoardState} from "../state/BoardState";
+import {jumpToMoveAction} from "../action/JumpToMoveAction";
 
 export const boardReducer = (previousState: BoardState = DEFAULT_STATE.boardState, action: Action): BoardState => {
 
-    const currentMove = previousState.history[previousState.history.length - 1]
-
      if(isAction(changeSymbolAction, action)) {
+        const history = previousState.history.slice(0, previousState.stepNumber + 1)
+        const currentMove = history[history.length - 1]
+
         const {index: targetIndex} = action
         const {data, playerTurn, currentMoveIndex} = updateForTurn(currentMove.data, currentMove.playerTurn, targetIndex)
         const {data: dataUpdatedForTurn, gameStatus} = determineIfGameComplete(data)
 
         const newHistory: MoveState[] = [{playerTurn: playerTurn, data: dataUpdatedForTurn, gameStatus, currentMoveIndex: currentMoveIndex}]
-        return {...previousState, history: [...previousState.history, ...newHistory]}
+        return {...previousState, history: [...history, ...newHistory], stepNumber: previousState.stepNumber + 1}
      }
 
     if(isAction(resetGameAction, action)) {
         return DEFAULT_STATE.boardState
+    }
+
+    if(isAction(jumpToMoveAction, action)) {
+        const {index} = action
+        return {...previousState, stepNumber: index}
     }
 
   return previousState

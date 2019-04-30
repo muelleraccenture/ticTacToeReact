@@ -6,14 +6,13 @@ import React from "react";
 import {container, header} from "../../styles/base";
 
 export interface HeaderStateProps {
-    readonly history: MoveState[],
+    readonly moveState: MoveState,
 }
 
 export class Header extends React.Component<HeaderStateProps> {
 
     render() {
-        const history = this.props.history
-        const moveState = history[history.length - 1]
+        const moveState = this.props.moveState
         let headerElement
 
         if (moveState.gameStatus == GameStatus.Winner) {

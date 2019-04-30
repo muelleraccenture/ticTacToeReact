@@ -39,7 +39,14 @@ export class History extends React.Component<HistoryStateProps & HistoryStateDis
 
                                 return (
                                     <TouchableOpacity
-                                        onPress={() => this.props.jumpToMove(index)}
+                                        onPress={
+                                            () => {
+                                                this.props.jumpToMove(index)
+                                                this.props.navigation.navigate('Home')
+                                            }
+                                        }
+                                        // onPress={() => this.props.navigation.navigate('History')}
+
                                     >
                                         {buttonText}
                                     </TouchableOpacity>
